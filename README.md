@@ -60,6 +60,13 @@ O nome remete tanto à **natureza** (foco original em SBN) quanto ao conceito de
 
 ---
 
-### Autor
+### Autor 
 Desenvolvido como uma solução de automação ágil para diagnósticos e mapas de decisão.
+
+## 👥 Créditos e Desenvolvimento
+
+Este projeto foi idealizado e desenvolvido sob a orientação e colaboração de:
+
+*   **Mestre Gabriela Borba Silveira** – Especialista e Mentora do projeto (SBN).
+*   **Henrique Zardin de Lima** – Cientista da Computação e Desenvolvedor do Motor de Decisões.
 
