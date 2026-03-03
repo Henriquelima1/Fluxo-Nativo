@@ -67,6 +67,6 @@ Desenvolvido como uma solução de automação ágil para diagnósticos e mapas 
 
 Este projeto foi idealizado e desenvolvido sob a orientação e colaboração de:
 
-*   **Mestre Gabriela Borba Silveira** – Especialista e Mentora do projeto (SBN).
+*   **Ma. Gabriela Borba Silveira** – Especialista e Mentora do projeto (SBN).
 *   **Henrique Zardin de Lima** – Cientista da Computação e Desenvolvedor do Motor de Decisões.
 
