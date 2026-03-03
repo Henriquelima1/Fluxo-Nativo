@@ -1,37 +1,65 @@
-🌿 Fluxo Nativo: Motor de Decisões via Google Sheets
-O Fluxo Nativo é uma ferramenta serverless de criação de fluxogramas e árvores de decisão interativas. Ele permite que qualquer pessoa crie um bot de perguntas e respostas complexo utilizando apenas o Google Sheets como interface de gerenciamento (No-Code), enquanto o motor roda via Google Apps Script.
-Originalmente concebido para projetos de SBN (Soluções Baseadas na Natureza), sua arquitetura flexível permite a aplicação em diagnósticos ambientais, triagem de clientes, treinamentos ou qualquer fluxo lógico de decisão.
-🚀 Funcionalidades
-Estrutura Dinâmica: O fluxo de perguntas é definido inteiramente pelas linhas e colunas de uma planilha.
-Múltiplos Tipos de Resposta: Suporte nativo para escolha única (botões) e múltipla escolha (checkboxes).
-Navegação Inteligente: Botão "Voltar" com sistema de pilha (stack), permitindo que o usuário altere o caminho percorrido.
-Estilização "What You See Is What You Get": O motor captura cores, tamanhos de fonte e negritos diretamente da formatação das células do Google Sheets.
-Relatórios em Tempo Real: Todas as respostas são salvas automaticamente em uma aba de relatórios, pronta para exportação em CSV.
-Hospedagem Gratuita: Roda 100% na infraestrutura do Google Cloud (Apps Script), sem custos de servidor.
-🛠️ Estrutura do Projeto
-O projeto é dividido em três camadas principais:
-Backend (Código.gs): Processa a lógica de leitura da planilha, converte a formatação Rich Text em HTML e gerencia a gravação das respostas.
-Frontend (Index.html): Interface de usuário (UI) responsiva e minimalista, construída em JavaScript vanila para máxima velocidade.
-Database (Google Sheets): Onde a lógica de negócio reside.
-Coluna ID: Identificador único da pergunta.
-Coluna Texto: Pergunta formatada (aceita cores e estilos).
-Coluna Opções: Alternativas separadas por vírgula.
-Coluna Destinos: IDs para onde o usuário será levado após a resposta.
-Coluna Tipo: Define o comportamento da UI (unica ou multipla).
-📋 Como Instalar
-Crie uma nova Google Sheet.
-Vá em Extensões > Apps Script.
-Copie os arquivos deste repositório para o editor do Google.
-Configure as colunas da planilha conforme o modelo: ID | Texto | Opções | Destinos | Tipo.
-Clique em Implantar > Nova Implantação.
-Configure o acesso para "Qualquer pessoa" e execute como "Eu".
-Copie a URL gerada e pronto!
-💡 Aplicações
-Embora focado em Soluções Baseadas na Natureza (SBN), o Fluxo Nativo é ideal para:
-Diagnósticos técnicos de campo.
-Questionários de viabilidade de projetos.
-Automação de processos de decisão em equipes pequenas.
-Ferramentas educativas interativas.
-Autor
-Desenvolvido como uma solução ágil para transformar dados estáticos em experiências interativas de decisão.
-Dica: No GitHub, você pode adicionar uma imagem do seu bot ou um print da sua planilha para ilustrar ainda mais.
+# 🌿 Fluxo Nativo
+
+**Fluxo Nativo** é um motor de decisões interativo e *serverless*, desenvolvido para transformar árvores de decisão complexas em interfaces de chat simples e intuitivas. 
+
+Originalmente criado para projetos de **SBN (Soluções Baseadas na Natureza)**, o sistema permite que qualquer pessoa gerencie fluxos lógicos e estilização visual diretamente pelo **Google Sheets**, sem precisar tocar no código.
+
+---
+
+## 🚀 Funcionalidades
+
+- **Gestão No-Code:** Edite perguntas, opções e destinos diretamente em uma planilha Google.
+- **Estilização Dinâmica (Rich Text):** O sistema identifica cores, tamanhos de fonte e negritos aplicados nas células da planilha e os replica no front-end.
+- **Tipos de Pergunta Híbridos:** Suporte para **Escolha Única** (botões diretos) e **Múltipla Escolha** (checkboxes com confirmação).
+- **Navegação com Histórico:** Inclui botão **"Voltar"** inteligente, que rastreia o caminho exato percorrido pelo usuário através de uma pilha (*stack*).
+- **Relatórios Automatizados:** As respostas são salvas em tempo real em uma aba de relatórios, facilitando a exportação para CSV/Excel.
+- **Custo Zero:** Hospedagem gratuita via Google Apps Script (infraestrutura Google Cloud).
+
+---
+
+## 🛠️ Estrutura do Projeto
+
+O projeto utiliza a arquitetura de **Web App** do Google Apps Script:
+
+1.  **Backend (`Código.gs`):** 
+    *   Processa a lógica de leitura da planilha.
+    *   Converte objetos `RichTextValue` do Google Sheets em HTML/CSS.
+    *   Gerencia a persistência de dados no banco (planilha).
+2.  **Frontend (`Index.html`):** 
+    *   Interface responsiva (Mobile First).
+    *   Lógica de renderização dinâmica baseada no tipo de pergunta.
+    *   Gerenciamento de estado local para o botão "Voltar".
+3.  **Banco de Dados (Google Sheets):**
+    *   **Coluna ID:** Identificador único da etapa (ex: `inicio`, `pergunta_2`).
+    *   **Coluna Texto:** O conteúdo da pergunta (formatado visualmente na planilha).
+    *   **Coluna Opções:** Alternativas separadas por vírgula.
+    *   **Coluna Destinos:** IDs para onde o fluxo deve seguir.
+    *   **Coluna Tipo:** Define o comportamento (`unica` ou `multipla`).
+
+---
+
+## 📋 Configuração e Instalação
+
+1.  **Planilha:** Crie uma Google Sheet com o cabeçalho: `ID | Texto | Opções | Destinos | Tipo`.
+2.  **Scripts:** 
+    *   Abra `Extensões` > `Apps Script`.
+    *   Adicione o conteúdo de `Código.gs`.
+    *   Crie um arquivo HTML chamado `Index` e adicione o conteúdo de `Index.html`.
+3.  **Implantação:**
+    *   Clique em `Implantar` > `Nova Implantação`.
+    *   Selecione **App da Web**.
+    *   Executar como: **Eu**.
+    *   Quem tem acesso: **Qualquer pessoa**.
+4.  **Uso:** Copie a URL gerada e compartilhe.
+
+---
+
+## 💡 Por que "Fluxo Nativo"?
+
+O nome remete tanto à **natureza** (foco original em SBN) quanto ao conceito de algo que nasce pronto para o sistema. É uma solução leve, que não depende de frameworks pesados e roda nativamente no ecossistema de produtividade mais usado do mundo.
+
+---
+
+### Autor
+Desenvolvido como uma solução de automação ágil para diagnósticos e mapas de decisão.
+
