@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body { font-family: sans-serif; padding: 20px; display: flex; justify-content: center; }
+    #box { max-width: 400px; width: 100%; border: 1px solid #ddd; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h3 { color: #333; margin-top: 0; }
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 45px; /* Garante que todos tenham a mesma altura */
+      vertical-align: middle;
+    }
+    button:hover { background: #0056b3; }
+    .op-item { margin-bottom: 10px; display: flex; align-items: center; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+  </style>
+</head>
+<body>
+  <div id="box">Carregando fluxo...</div>
+
+  <script>
+    let mapa = {};
+    let historicoRespostas = {}; // O que ele respondeu
+    let pilhaCaminho = [];       // A ordem dos IDs que ele visitou
+
+    // 1. Busca os dados da planilha assim que abre
+    google.script.run.withSuccessHandler(function(dados) {
+      mapa = dados;
+      exibir('inicio'); // Certifique-se que o ID na planilha é 'inicio'
+    }).buscarDados();
+
+    function exibir(id) {
+      const container = document.getElementById('box');
+      
+      // Se o ID não existir no mapa, finaliza e salva
+      if (!mapa[id]) {
+        container.innerHTML = "<h3>Enviando respostas...</h3>";
+        google.script.run.withSuccessHandler(function() {
+          container.innerHTML = "<h3>Concluído! Seus dados foram salvos.</h3>";
+        }).salvarResposta(historicoRespostas);
+        return;
+      }
+
+      let item = mapa[id];
+      let html = `<div style="margin-bottom:20px;">${item.texto}</div>`;
+
+      if (item.tipo === 'multipla') {
+        // MÚLTIPLA ESCOLHA (Checkboxes)
+        item.opcoes.forEach(function(opt, i) {
+          html += '<div class="op-item"><input type="checkbox" name="op" value="' + opt + '" id="i'+i+'"> <label for="i'+i+'">' + opt + '</label></div>';
+        });
+        // Pega o primeiro destino da lista
+        let prox = Array.isArray(item.destinos) ? item.destinos[0] : item.destinos;
+        html += `<button onclick="pularUnica('${id}', '${opt.replace(/<[^>]*>?/gm, '')}', '${prox}')">${opt}</button> `;
+      } 
+      else {
+        // ESCOLHA ÚNICA (Botões)
+        item.opcoes.forEach(function(opt, i) {
+          let prox = (Array.isArray(item.destinos) && item.destinos[i]) ? item.destinos[i] : item.destinos;
+          html += `<button onclick="pularUnica('${id}', '${opt.replace(/<[^>]*>?/gm, '')}', '${prox}')">${opt}</button> `;
+        });
+      }
+
+      // --- BOTÃO VOLTAR ---
+      if (pilhaCaminho.length > 0) {
+        html += `<hr><button style="background:#6c757d;" onclick="voltar()">⬅ Voltar</button>`;
+      }
+      
+      container.innerHTML = html;
+    }
+
+    function pularUnica(idAtual, resposta, destino) {
+      historicoRespostas[idAtual] = resposta;
+      pilhaCaminho.push(idAtual);
+      exibir(destino);
+    }
+
+    function pularMultipla(pergunta, destino) {
+      let marcados = Array.from(document.querySelectorAll('.check-bot:checked')).map(cb => cb.value);
+      if (marcados.length === 0) return alert("Por favor, selecione ao menos uma opção.");
+      
+      historicoRespostas[idAtual] = marcados.join(", ");
+      pilhaCaminho.push(idAtual); // Salva que passamos por aqui
+      exibir(destino);
+      
+    }
+
+    function voltar() {
+      if (pilhaCaminho.length > 0) {
+        let anterior = pilhaCaminho.pop(); // Remove o último e nos dá o ID
+        exibir(anterior);
+      }
+    }
+  </script>
+</body>
+</html>
